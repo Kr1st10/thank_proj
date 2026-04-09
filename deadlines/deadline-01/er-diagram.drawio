@@ -1,0 +1,81 @@
+<mxfile host="app.diagrams.net" modified="2026-04-09T19:30:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="deadline01-er" name="ER Diagram">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="users" value="users&#xa;---&#xa;id PK UUID&#xa;display_name string&#xa;email string UNIQUE&#xa;domain_login string NULL&#xa;created_at datetime&#xa;updated_at datetime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="projects" value="projects&#xa;---&#xa;id PK UUID&#xa;name string&#xa;description text NULL&#xa;created_by_user_id FK -&gt; users.id&#xa;created_at datetime&#xa;updated_at datetime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="260" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="project_members" value="project_members&#xa;---&#xa;id PK UUID&#xa;project_id FK -&gt; projects.id&#xa;user_id FK -&gt; users.id&#xa;role enum(Member, Admin)&#xa;joined_at datetime&#xa;UNIQUE(project_id, user_id)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="350" y="290" width="260" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="suggestions" value="suggestions&#xa;---&#xa;id PK UUID&#xa;project_id FK -&gt; projects.id&#xa;author_id FK -&gt; users.id&#xa;text text&#xa;status enum(New, InProgress, Accepted, Rejected)&#xa;created_at datetime&#xa;updated_at datetime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="80" width="290" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="votes" value="votes&#xa;---&#xa;id PK UUID&#xa;suggestion_id FK -&gt; suggestions.id&#xa;user_id FK -&gt; users.id&#xa;vote_type enum(Up, Down)&#xa;created_at datetime&#xa;updated_at datetime&#xa;UNIQUE(suggestion_id, user_id)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f4cccc;strokeColor=#cc0000;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="70" width="280" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="comments" value="comments&#xa;---&#xa;id PK UUID&#xa;project_id FK -&gt; projects.id&#xa;suggestion_id FK -&gt; suggestions.id&#xa;author_id FK -&gt; users.id&#xa;parent_comment_id FK -&gt; comments.id NULL&#xa;text text&#xa;created_at datetime&#xa;updated_at datetime&#xa;deleted_at datetime NULL" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ead1dc;strokeColor=#9673a6;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="320" width="300" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="drafts" value="drafts&#xa;---&#xa;id PK UUID&#xa;project_id FK -&gt; projects.id&#xa;user_id FK -&gt; users.id&#xa;type enum(Suggestion, Comment)&#xa;suggestion_id FK -&gt; suggestions.id NULL&#xa;parent_comment_id FK -&gt; comments.id NULL&#xa;payload_json json&#xa;created_at datetime&#xa;updated_at datetime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="320" width="300" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_users_projects" value="1:N creator" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="users" target="projects">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_users_members" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="users" target="project_members">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_projects_members" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="projects" target="project_members">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_projects_suggestions" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="projects" target="suggestions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_users_suggestions" value="1:N author" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="users" target="suggestions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_users_votes" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="users" target="votes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_suggestions_votes" value="1:N&#xa;score is derived" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="suggestions" target="votes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_projects_comments" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="projects" target="comments">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_users_comments" value="1:N author" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="users" target="comments">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_suggestions_comments" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="suggestions" target="comments">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_comments_comments" value="1:N replies" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="comments" target="comments">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="560" />
+              <mxPoint x="1030" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_users_drafts" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="users" target="drafts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_projects_drafts" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="projects" target="drafts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_suggestions_drafts" value="0..N for comment drafts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="suggestions" target="drafts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_comments_drafts" value="0..N parent reference" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontFamily=Helvetica;fontSize=11;" edge="1" parent="1" source="comments" target="drafts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
