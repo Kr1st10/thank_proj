@@ -6,6 +6,7 @@ erDiagram
         uuid id PK
         string display_name
         string email UK
+        string password_hash
         string domain_login
         datetime created_at
         datetime updated_at
@@ -111,6 +112,7 @@ erDiagram
 - На пару `suggestion_id + user_id` в `VOTES` действует ограничение уникальности.
 - `score` предложения не хранится отдельно и вычисляется как производная величина из активных голосов.
 - `score = количество голосов Up - количество голосов Down`.
+- Для учебного MVP локальная авторизация использует `password_hash` в `USERS`, а не пароль в открытом виде.
 - Для корневого комментария `parent_comment_id = null`.
 - Для черновика предложения `suggestion_id` и `parent_comment_id` могут быть `null`.
 - Для черновика комментария обязательно хранить `suggestion_id`, а `parent_comment_id` заполняется только для ответа.
